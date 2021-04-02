@@ -1,0 +1,6 @@
+---
+source_ips:
+  - address: 100.64.206.40
+    alias: NAT
+  - address: 100.64.206.28
+    alias: NONAT

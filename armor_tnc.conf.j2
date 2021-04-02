@@ -1,0 +1,19 @@
+log_file: {{ log_file }}
+log_level: {{ log_level }}
+database:
+  db_bucket: {{ db_bucket }}
+  db_measurement: {{ db_measurement  }}
+  db_token: {{ db_token }}
+  db_org: {{ db_org }}
+  db_host: influxdb
+  db_port: {{ db_port }}
+source_ips:
+{% for i in source_ips %}
+  - address: {{ i['address'] }}
+    alias: {{ i['alias'] }}
+{% endfor %}
+sockets:
+{% for i in sockets %}
+  - domain: {{ i['domain'] }}
+    port: {{ i['port'] }}
+{% endfor %}

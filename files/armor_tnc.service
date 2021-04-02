@@ -1,0 +1,10 @@
+[Unit]
+Description=Tests connectivity to Armor services
+Wants=amror_tnc.timer
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/armor_tnc -d
+
+[Install]
+WantedBy=multi-user.target

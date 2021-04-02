@@ -1,0 +1,11 @@
+[Unit]
+Description=Time for Armor TNC
+Requires=armor_tnc.service
+
+[Timer]
+Unit=armor_tnc.service
+OnUnitActiveSec=30s
+OnBootSec=30s
+
+[Install]
+WantedBy=timers.target

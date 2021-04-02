@@ -1,0 +1,85 @@
+---
+- name: Armor Test Network Connection Distributed Monitoring Configuration
+  hosts: Armor_monitor
+  vars_files:
+    - armor_tnc_vars.yml
+  tasks:
+    - name: confirm correct variables are defined from armor_tnc_vars.yml
+      fail:
+        msg: "{{ item }} is not defined"
+      when: "{{ item }} is not defined"
+      with_items:
+        - log_file
+        - log_level
+        - db_bucket
+        - db_measurement
+        - db_token
+        - db_org
+        - db_port
+        - sockets
+    - name: set hosts file entry for influxdb connection
+      lineinfile:
+        path: /etc/hosts
+        line: 146.88.111.151  influxdb
+      when: ansible_hostname != "dfw"
+    - name: set hosts file entry for influxdb connection
+      lineinfile:
+        path: /etc/hosts
+        line: 127.0.0.1  influxdb
+      when: ansible_hostname == "dfw"
+    - name: create application user
+      user:
+        name: armor_tnc
+    - name: install required packages
+      package:
+        name:
+          - python3
+          - python3-pip
+    - name: install required python libraries
+      shell: "pip3 install {{ item }}"
+      loop:
+        - pyyaml
+        - influxdb-client
+    - name: install armor tnc
+      copy:
+        src: files/armor_tnc
+        dest: /usr/local/sbin/armor_tnc
+        owner: root
+        group: root
+        mode: 0755
+    - name: create logging directory
+      file:
+        path: /var/log/armor_tnc
+        owner: armor_tnc
+        group: armor_tnc
+        mode: 0777
+        state: directory
+    - name: apply armor_tnc config
+      template:
+        src: armor_tnc.conf.j2
+        dest: /etc/armor_tnc.conf
+        owner: root
+        group: root
+        mode: 0644
+    - name: create service unit
+      copy:
+        src: files/armor_tnc.service
+        dest: /etc/systemd/system/armor_tnc.service
+        owner: root
+        group: root
+        mode: 0644
+    - name: create systemd timer
+      copy:
+        src: files/armor_tnc.timer
+        dest: /etc/systemd/system/armor_tnc.timer
+        owner: root
+        group: root
+        mode: 0644
+    - name: systemd relaod
+      systemd:
+        daemon_reload: yes
+    - name: enable timer
+      systemd:
+        name: armor_tnc.timer
+        enabled: yes
+        state: started
