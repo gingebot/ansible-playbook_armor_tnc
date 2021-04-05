@@ -8,10 +8,14 @@ database:
   db_host: influxdb
   db_port: {{ db_port }}
 source_ips:
-{% for i in source_ips %}
-  - address: {{ i['address'] }}
-    alias: {{ i['alias'] }}
-{% endfor %}
+  - address: {{ ansible_default_ipv4.address }}
+    alias: NAT
+{% if source.NONAT is defined %}  - address: {{ source.NONAT }}
+    alias: NONAT
+{% endif %}
+{% if source.GEN34 is defined %}  - address: {{ source.GEN34 }}
+    alias: GEN34
+{% endif %}
 sockets:
 {% for i in sockets %}
   - domain: {{ i['domain'] }}

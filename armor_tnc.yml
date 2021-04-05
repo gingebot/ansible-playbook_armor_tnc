@@ -1,9 +1,13 @@
 ---
 - name: Armor Test Network Connection Distributed Monitoring Configuration
-  hosts: Armor_monitor
+  #hosts: Armor_monitor
+  hosts: LHR
   vars_files:
     - armor_tnc_vars.yml
   tasks:
+    - name: run network config
+      include_tasks: network_config.yml
+
     - name: confirm correct variables are defined from armor_tnc_vars.yml
       fail:
         msg: "{{ item }} is not defined"
@@ -22,17 +26,6 @@
         msg: "{{ item }} doesn't contain the correct elements of domain and port"
       when: item.domain is not defined or item.port is not defined
       loop: "{{ sockets }}"
-    - name: confirm the correct host vars are defined
-      fail:
-        msg: "{{ item }} is not defined"
-      when: item is not defined
-      with_items:
-        - source_ips
-    - name: confirm source_ips contain the correct elements
-      fail:
-        msg: "{{ item }} doesn't contain the correct elements of address and alias"
-      when: item.address is not defined or item.alias is not defined
-      loop: "{{ source_ips }}"
 
     - name: set hosts file entry for influxdb connection
       lineinfile:

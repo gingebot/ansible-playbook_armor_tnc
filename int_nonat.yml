@@ -1,0 +1,13 @@
+nonat_connection:
+  - name: primary
+    type: ethernet
+    state: up
+    interface_name: "{{ ansible_default_ipv4.interface }}"
+    ip:
+      gateway4: "{{ ansible_default_ipv4.gateway }}"
+      address:
+        - "{{ ansible_default_ipv4.address }}/24"
+        - "{{ source.NONAT }}/24"
+      dns:
+        - 147.75.16.11
+        - 147.75.16.12

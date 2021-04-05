@@ -1,0 +1,8 @@
+gen34_connection:
+  - name: gen34
+    type: ethernet
+    state: up
+    interface_name: "{{ ansible_interfaces | difference(['lo',ansible_default_ipv4.alias]) | first }}"
+    ip:
+      address:
+        - "{{ source.GEN34 }}{{ source.GEN34_prefix}}"

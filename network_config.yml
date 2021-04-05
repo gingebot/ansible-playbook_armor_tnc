@@ -1,0 +1,16 @@
+- name: empty network connections var
+  set_fact:
+    network_connections: []
+- name: include gen34 config tasks if needed
+  include_tasks: network_gen34_config.yml
+  when: ansible_interfaces|length==3 and ( source.GEN34 is defined )
+- name: include gen4 config tasks if needed
+  include_tasks: network_gen4_config.yml
+  when: source.NONAT is defined
+
+- debug:
+    var: network_connections  
+
+- name:
+  include_role:
+    name: rhel-system-roles.network
