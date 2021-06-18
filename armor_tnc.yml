@@ -1,7 +1,6 @@
 ---
 - name: Armor Test Network Connection Distributed Monitoring Configuration
-  #hosts: Armor_monitor
-  hosts: LHR
+  hosts: Armor_monitor
   vars_files:
     - armor_tnc_vars.yml
   tasks:

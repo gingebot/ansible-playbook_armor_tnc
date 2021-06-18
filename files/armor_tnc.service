@@ -1,6 +1,6 @@
 [Unit]
-Description=Tests connectivity to Armor services
-Wants=amror_tnc.timer
+Description=Armor TNC, Armor services connectivity test
+Wants=armor_tnc.timer
 
 [Service]
 Type=oneshot

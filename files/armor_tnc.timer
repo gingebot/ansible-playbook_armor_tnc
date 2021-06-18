@@ -1,5 +1,5 @@
 [Unit]
-Description=Time for Armor TNC
+Description=Timer for Armor TNC, Armor service connectivity checker
 Requires=armor_tnc.service
 
 [Timer]

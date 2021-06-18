@@ -1,6 +1,0 @@
-- name: include gen4 interface variables if required
-  include_vars:
-   file: int_nonat.yml
-- name: combine gen34 connection into network_connections
-  set_fact:
-    network_connections: "{{ network_connections + nonat_connection }}"
